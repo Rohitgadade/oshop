@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/">Oshop</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="collapse.toggle()"
+      [attr.aria-expanded]="!isCollapsed"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse"
+      #collapse="ngbCollapse"
+      [(ngbCollapse)]="isCollapsed"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/shopping-cart"
+            >Shopping cart</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" routerLink="/login">Login</a>
+        </li>
+        <li ngbDropdown class="nav-item dropdown">
+          <a
+            ngbDropdownToggle
+            class="nav-link dropdown-toggle"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Username
+          </a>
+          <ul ngbDropdownMenu class="dropdown-menu">
+            <li ngbDropdownItem>
+              <a class="dropdown-item" routerLink="/my-orders">My order</a>
+            </li>
+            <li ngbDropdownItem>
+              <a class="dropdown-item" routerLink="/admin/orders"
+                >Manage order</a
+              >
+            </li>
+            <li ngbDropdownItem>
+              <a class="dropdown-item" routerLink="/admin/products"
+                >Manage products</a
+              >
+            </li>
+            <li ngbDropdownItem>
+              <a class="dropdown-item" style="cursor: pointer">Log out</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

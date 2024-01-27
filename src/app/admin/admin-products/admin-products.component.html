@@ -1,0 +1,32 @@
+<p>
+  <a routerLink="new" class="btn btn-primary">New product</a>
+</p>
+<p>
+  <input #query (keyup)="filter(query.value)" type="text" class="form-control" placeholder="Search...">
+</p>
+
+@if (!loading) {
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Price</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of filteredProducts; track $index) {
+    <tr>
+      <td>{{ item.title }}</td>
+      <td>{{ item.price }}</td>
+      <td>
+        <a [routerLink]="['/admin/products/', item.productId]">Edit</a>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+} @else {
+  <app-loader></app-loader>
+}
