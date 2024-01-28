@@ -1,1 +1,21 @@
-<p>products works!</p>
+<div class="row">
+  @for (product of products; track $index) {
+  <ng-container>
+    <div class="col">
+      <div class="card" style="width: 15rem">
+        <img src="{{ product.imageUrl }}" class="card-img-top" />
+        <div class="card-body">
+          <h5 class="card-title">{{ product.title }}</h5>
+          <p class="card-text">
+            {{ product.price| currency : "USD" : "symbol" }}
+          </p>
+          <a href="#" class="btn btn-primary">Add to Cart</a>
+        </div>
+      </div>
+    </div>
+    @if (($index +1)%2==0) {
+    <div class="w-100"></div>
+    }
+  </ng-container>
+  }
+</div>

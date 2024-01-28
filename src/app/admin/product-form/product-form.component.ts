@@ -3,6 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Category } from '../../models/Category.model';
 import { Product } from '../../models/Product.model';
 import { ProductService } from '../../service/product.service';
 import { LoaderComponent } from '../../shared/loader/loader.component';
@@ -23,13 +24,15 @@ export class ProductFormComponent implements OnInit {
   isEditMode: boolean = false;
   editItemId!: string;
   isLoading: boolean = false;
-  categories = [
-    { id: 1, name: 'Bread' },
-    { id: 2, name: 'Dairy' },
-    { id: 3, name: 'Fruits' },
-    { id: 4, name: 'Seasonings and Spices' },
-    { id: 5, name: 'Vegetables' },
-  ];
+  // categories = [
+  //   { id: 1, name: 'Bread' },
+  //   { id: 2, name: 'Dairy' },
+  //   { id: 3, name: 'Fruits' },
+  //   { id: 4, name: 'Seasonings and Spices' },
+  //   { id: 5, name: 'Vegetables' },
+  // ];
+
+  categories!:Category;
 
   constructor(
     private productSerivce: ProductService,
@@ -53,6 +56,11 @@ export class ProductFormComponent implements OnInit {
         }
       });
     }
+    this.productSerivce.getCategories().subscribe({
+      next:(category:Category)=>{
+        this.categories=category
+      }
+    })
   }
 
   save() {
