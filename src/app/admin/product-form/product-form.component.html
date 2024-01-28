@@ -53,7 +53,7 @@
           class="form-control"
           required
         >
-          @for (item of categories; track item.id) {
+          @for (item of categories; track item.name) {
           <option [ngValue]="item.name">{{ item.name }}</option>
           }
         </select>

@@ -17,7 +17,7 @@ export class ProductService {
     );
   }
 
-  getProducts(){
+  getProducts() {
     return this._http
       .get<Product[]>(
         'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products.json'
@@ -58,8 +58,21 @@ export class ProductService {
     );
   }
   getCategories() {
-    return this._http.get<Category>(
-      'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products.json'
-    );
+    return this._http
+      .get<Category[]>(
+        'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/categories.json'
+      )
+      .pipe(
+        map((responseData) => {
+          const categoryArray: Category[] = [];
+
+          for (const key in responseData) {
+            if (responseData.hasOwnProperty(key)) {
+              categoryArray.push({ ...responseData[key], name: key });
+            }
+          }
+          return categoryArray;
+        })
+      );
   }
 }

@@ -19,9 +19,12 @@ export class ProductFormComponent implements OnInit {
   @ViewChild('f')
   form!: NgForm;
   products!: Product;
+  categories:Category[]=[];
+
   reg: RegExp =
     /^https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|bmp)$/i; //image url validation regex expression
-  isEditMode: boolean = false;
+  
+    isEditMode: boolean = false;
   editItemId!: string;
   isLoading: boolean = false;
   // categories = [
@@ -32,15 +35,19 @@ export class ProductFormComponent implements OnInit {
   //   { id: 5, name: 'Vegetables' },
   // ];
 
-  categories!:Category;
 
   constructor(
     private productSerivce: ProductService,
     private route: ActivatedRoute,
     private router: Router
-  ) {}
+  ) {
+   
+  }
 
   ngOnInit() {
+     this.productSerivce.getCategories().subscribe((cat:Category[])=>{
+      this.categories=cat
+     })
     this.editItemId = this.route.snapshot.params['id'];
     if (this.editItemId) {
       this.productSerivce.getProductById(this.editItemId).subscribe({
@@ -56,11 +63,7 @@ export class ProductFormComponent implements OnInit {
         }
       });
     }
-    this.productSerivce.getCategories().subscribe({
-      next:(category:Category)=>{
-        this.categories=category
-      }
-    })
+   
   }
 
   save() {
