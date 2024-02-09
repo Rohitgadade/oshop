@@ -12,7 +12,7 @@ export class ProductService {
 
   storeProduct(product: Product) {
     return this._http.post<Product>(
-      'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products.json',
+      'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/products.json',
       product
     );
   }
@@ -20,7 +20,7 @@ export class ProductService {
   getProducts() {
     return this._http
       .get<Product[]>(
-        'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products.json'
+        'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/products.json'
       )
       .pipe(
         map((responseData) => {
@@ -37,14 +37,14 @@ export class ProductService {
   }
   getProductById(productId: string) {
     return this._http.get<Product>(
-      'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products/' +
+      'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/products/' +
         productId +
         '/.json'
     );
   }
   updateProduct(productId: string, product: Product) {
     return this._http.put<Product>(
-      'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products/' +
+      'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/products/' +
         productId +
         '/.json',
       product
@@ -52,7 +52,7 @@ export class ProductService {
   }
   deleteProduct(productId: string) {
     return this._http.delete<Product>(
-      'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/products/' +
+      'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/products/' +
         productId +
         '/.json'
     );
@@ -60,7 +60,7 @@ export class ProductService {
   getCategories() {
     return this._http
       .get<Category[]>(
-        'https://oshop-7595d-default-rtdb.firebaseio.com/oshop/categories.json'
+        'https://oshop-efaad-default-rtdb.asia-southeast1.firebasedatabase.app/oshop/categories.json'
       )
       .pipe(
         map((responseData) => {
@@ -68,7 +68,7 @@ export class ProductService {
 
           for (const key in responseData) {
             if (responseData.hasOwnProperty(key)) {
-              categoryArray.push({ ...responseData[key], name: key });
+              categoryArray.push({ ...responseData[key],ids:key});
             }
           }
           return categoryArray;

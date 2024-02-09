@@ -5,65 +5,74 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Category } from '../../models/Category.model';
 import { Product } from '../../models/Product.model';
+import { ProductCardComponent } from '../../product-card/product-card.component';
 import { ProductService } from '../../service/product.service';
 import { LoaderComponent } from '../../shared/loader/loader.component';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [FormsModule, CommonModule, NgbModule, LoaderComponent],
+  imports: [
+    FormsModule,
+    CommonModule,
+    NgbModule,
+    LoaderComponent,
+    ProductCardComponent,
+  ],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
 })
 export class ProductFormComponent implements OnInit {
   @ViewChild('f')
   form!: NgForm;
-  products!: Product;
-  categories:Category[]=[];
+  products = {
+    title: '',
+    price: 0,
+    category: '',
+    imageUrl: '',
+  };
+  categories: Category[] = [];
 
   reg: RegExp =
     /^https?:\/\/(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpe?g|gif|png|bmp)$/i; //image url validation regex expression
-  
-    isEditMode: boolean = false;
-  editItemId!: string;
-  isLoading: boolean = false;
-  // categories = [
-  //   { id: 1, name: 'Bread' },
-  //   { id: 2, name: 'Dairy' },
-  //   { id: 3, name: 'Fruits' },
-  //   { id: 4, name: 'Seasonings and Spices' },
-  //   { id: 5, name: 'Vegetables' },
-  // ];
 
+  isEditMode: boolean = false;
+  editItemId!: string;
+  isLoading: boolean = true;
 
   constructor(
     private productSerivce: ProductService,
     private route: ActivatedRoute,
     private router: Router
   ) {
-   
+    productSerivce.getCategories().subscribe((cat: Category[]) => {
+      this.categories = cat;
+      console.log('cat', cat);
+      console.log('categ', this.categories);
+    });
   }
 
   ngOnInit() {
-     this.productSerivce.getCategories().subscribe((cat:Category[])=>{
-      this.categories=cat
-     })
     this.editItemId = this.route.snapshot.params['id'];
     if (this.editItemId) {
       this.productSerivce.getProductById(this.editItemId).subscribe({
         next: (data: Product) => {
-          this.products = data;
+          // this.products = data;
+          this.products.title = data.title;
+          this.products.price = data.price;
+          this.products.category = data.category;
+          this.products.imageUrl = data.imageUrl;
+          console.log(data);
           this.isEditMode = true;
-          this.form.setValue({
-            title: this.products.title,
-            price: this.products.price,
-            category: this.products.category,
-            imageUrl: this.products.imageUrl,
-          });
-        }
+          // this.form.setValue({
+          //   title: this.products.title,
+          //   price: this.products.price,
+          //   category: this.products.category,
+          //   imageUrl: this.products.imageUrl,
+          // });
+        },
       });
     }
-   
   }
 
   save() {

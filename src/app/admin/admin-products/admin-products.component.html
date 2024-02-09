@@ -14,6 +14,7 @@
       <th></th>
     </tr>
   </thead>
+ @if (products.length!==0) {
   <tbody>
     @for (item of products; track $index) {
     <tr>
@@ -25,6 +26,9 @@
     </tr>
     }
   </tbody>
+ }@else {
+  <h6>No data found !!!</h6>
+ }
 </table>
 <div class="d-flex justify-content-between p-2">
 	<div class="col">
