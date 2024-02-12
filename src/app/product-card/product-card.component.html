@@ -1,17 +1,17 @@
-<div class="card" style="width: 20rem;">
-    <img
-      src="{{product.imageUrl}}"
-      class="card-img-top object-fit-cover"
-    />
-    <div class="card-body">
-      <h5 class="card-title">{{ product.title }}</h5>
-      <p class="card-text">
-        {{ product.price | currency : "USD" : "symbol" }}
-      </p>
-    </div>
-    <div class="card-footer d-grid gap">
-      @if (showActions) {
-        <a href="#" class="btn btn-primary">Add to Cart</a>
-        }
-    </div>
+<div class="card" style="width: 20rem">
+  <img src="{{ product.imageUrl }}" class="card-img-top object-fit-cover" />
+  <div class="card-body">
+    <h5 class="card-title">{{ product.title }}</h5>
+    <p class="card-text">
+      {{ product.price | currency : "USD" : "symbol" }}
+    </p>
   </div>
+  @if (showActions) {
+  <div class="card-footer d-grid gap">
+    <button (click)="addToCart(product)" class="btn btn-primary">
+      Add to Cart
+    </button>
+    {{getQuantity()}}
+  </div>
+  }
+</div>

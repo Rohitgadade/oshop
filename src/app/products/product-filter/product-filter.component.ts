@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Category } from '../../models/Category.model';
 import { ProductService } from '../../service/product.service';
@@ -8,19 +8,19 @@ import { ProductService } from '../../service/product.service';
   standalone: true,
   imports: [RouterModule],
   templateUrl: './product-filter.component.html',
-  styleUrl: './product-filter.component.sass'
+  styleUrl: './product-filter.component.sass',
 })
-export class ProductFilterComponent {
+export class ProductFilterComponent implements OnInit {
   categories: Category[] = [];
-  @Input('category') category!:string|null ;
+  @Input('category') category: any;
 
-  constructor(productService:ProductService){
-    productService.getCategories().subscribe({
+  constructor(private productService: ProductService) {}
+
+  ngOnInit(): void {
+    this.productService.getCategories().subscribe({
       next: (category: Category[]) => {
         this.categories = category;
       },
     });
-
   }
-
 }

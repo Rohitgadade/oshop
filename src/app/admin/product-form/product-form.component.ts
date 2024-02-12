@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import { Category } from '../../models/Category.model';
 import { Product } from '../../models/Product.model';
 import { ProductCardComponent } from '../../product-card/product-card.component';
@@ -22,7 +23,7 @@ import { LoaderComponent } from '../../shared/loader/loader.component';
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.scss',
 })
-export class ProductFormComponent implements OnInit {
+export class ProductFormComponent implements OnInit,OnDestroy {
   @ViewChild('f')
   form!: NgForm;
   products = {
@@ -31,6 +32,7 @@ export class ProductFormComponent implements OnInit {
     category: '',
     imageUrl: '',
   };
+  subscription!:Subscription;
   categories: Category[] = [];
 
   reg: RegExp =
@@ -45,7 +47,7 @@ export class ProductFormComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {
-    productSerivce.getCategories().subscribe((cat: Category[]) => {
+  this.subscription=  productSerivce.getCategories().subscribe((cat: Category[]) => {
       this.categories = cat;
       console.log('cat', cat);
       console.log('categ', this.categories);
@@ -55,7 +57,7 @@ export class ProductFormComponent implements OnInit {
   ngOnInit() {
     this.editItemId = this.route.snapshot.params['id'];
     if (this.editItemId) {
-      this.productSerivce.getProductById(this.editItemId).subscribe({
+   this.subscription=   this.productSerivce.getProductById(this.editItemId).subscribe({
         next: (data: Product) => {
           // this.products = data;
           this.products.title = data.title;
@@ -77,7 +79,7 @@ export class ProductFormComponent implements OnInit {
 
   save() {
     if (this.isEditMode) {
-      this.productSerivce
+  this.subscription=    this.productSerivce
         .updateProduct(this.editItemId, this.form.value)
         .subscribe({
           next: () => {
@@ -90,7 +92,7 @@ export class ProductFormComponent implements OnInit {
           },
         });
     } else {
-      this.productSerivce.storeProduct(this.form.value).subscribe({
+    this.subscription=  this.productSerivce.storeProduct(this.form.value).subscribe({
         next: () => {
           this.productSerivce.getProducts();
           this.router.navigate(['/admin/products']);
@@ -104,12 +106,15 @@ export class ProductFormComponent implements OnInit {
   }
   delete() {
     if (confirm('Are you sure you want to delete this product ?')) {
-      this.productSerivce.deleteProduct(this.editItemId).subscribe({
+     this.subscription= this.productSerivce.deleteProduct(this.editItemId).subscribe({
         next: () => {
           this.productSerivce.getProducts();
           this.router.navigate(['/admin/products']);
         },
       });
     }
+  }
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }
